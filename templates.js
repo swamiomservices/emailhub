@@ -1,17 +1,19 @@
+
 /*
   EDIT THIS FILE to add or change EmailHub templates.
-  Keep each template's id unique. Separate multiple email addresses with commas.
+  Keep each template's id unique.
   For line breaks in the message, use \n.
 */
+
 window.EMAILHUB_TEMPLATES = [
   {
-    id: "email_nov2026",
-    name: "Test_email",
-    description: "test email to PMC",
+    id: "email_wall_action",
+    name: "भिंत पाडण्याबाबत",
+    description: "भिंत पाडण्याच्या कारवाईबाबत ईमेल",
     to: "prashant24.patil@gmail.com",
     cc: "",
     bcc: "",
-    subject: "Enquiry",
-    body: "Dear Sir/Madam,\n\nI hope you are doing well.\n\nI am writing to enquire about [topic]. Could you please share the relevant information?\n\nThank you.\n\nRegards,\n[Your name]"
+    subject: "आंदोलना करणेबाबत",
+    body: "दिलेल्या आठवड्याच्या मदतीनंतर सुद्धा भिंत पाडली केलेली नाही त्याच्यामुळे मी सर्व सामान्य जनता आता तुम्हाला मदत म्हणून ही भिंत स्वतःच्या हाताने. ह्या संपूर्ण कारवाईसाठी आपली काही हरकत नसावी हीच अपेक्षा आहे."
   }
 ];
