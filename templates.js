@@ -10,7 +10,7 @@ window.EMAILHUB_TEMPLATES = [
     id: "email_wall_action",
     name: "भिंत पाडण्याबाबत",
     description: "भिंत पाडण्याच्या कारवाईबाबत ईमेल",
-    to: "prashant24.patil@gmail.com, swamiomservices1@gmail.com, gholapn27@gmail.com",
+    to: "swamiomservices1@gmail.com, gholapn27@gmail.com",
     cc: "",
     bcc: "",
     subject: "आंदोलना करणेबाबत",
