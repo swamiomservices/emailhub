@@ -116,7 +116,8 @@
 
     // Spaces are encoded safely by URLSearchParams.
     // Do not replace %20 with +.
-    const url = `mailto:${to}?${params.toString()}`;
+    const queryString = params.toString().replace(/\+/g, "%20");
+    const url = `mailto:${to}?${queryString}`;
 
     window.location.href = url;
 
