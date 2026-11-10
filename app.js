@@ -117,9 +117,35 @@
     // Spaces are encoded safely by URLSearchParams.
     // Do not replace %20 with +.
     const queryString = params.toString().replace(/\+/g, "%20");
-    const url = `mailto:${to}?${queryString}`;
+   const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-    window.location.href = url;
+if (isMobile) {
+  const url = `mailto:${to}?${queryString}`;
+  window.location.href = url;
+} else {
+  const gmailParams = new URLSearchParams();
+
+  gmailParams.set("view", "cm");
+  gmailParams.set("fs", "1");
+  gmailParams.set("to", to);
+
+  if (field("cc").value.trim()) {
+    gmailParams.set("cc", normalizeAddresses(field("cc").value));
+  }
+
+  if (field("bcc").value.trim()) {
+    gmailParams.set("bcc", normalizeAddresses(field("bcc").value));
+  }
+
+  gmailParams.set("su", subject);
+  gmailParams.set("body", body);
+
+  const gmailUrl =
+    "https://mail.google.com/mail/?" +
+    gmailParams.toString().replace(/\+/g, "%20");
+
+  window.open(gmailUrl, "_blank");
+}
 
     setStatus(
       "Your email app should open with a draft. Review it and press Send there."
