@@ -1,4 +1,3 @@
-
 (() => {
   const templates = Array.isArray(window.EMAILHUB_TEMPLATES)
     ? window.EMAILHUB_TEMPLATES
@@ -20,6 +19,7 @@
 
   function loadTemplate(template) {
     selectedId = template.id;
+
     fields.forEach(key => {
       field(key).value = template[key] || "";
     });
@@ -30,6 +30,7 @@
         String(button.dataset.id === selectedId)
       );
     });
+
     setStatus("");
   }
 
@@ -55,85 +56,169 @@
   if (templates.length) {
     loadTemplate(templates[0]);
   } else {
-    setStatus("No templates found. Please add templates in templates.js.");
+    setStatus(
+      "No templates found. Please add templates in templates.js."
+    );
   }
 
   document.getElementById("reset-button").addEventListener("click", () => {
     const selected = templates.find(item => item.id === selectedId);
-    if (selected) loadTemplate(selected);
-    else form.reset();
+
+    if (selected) {
+      loadTemplate(selected);
+    } else {
+      form.reset();
+    }
   });
 
   function normalizeAddresses(value) {
-    return value.split(/[;,]/)
+    return value
+      .split(/[;,]/)
       .map(x => x.trim())
       .filter(Boolean)
       .join(",");
   }
 
-  form.addEventListener("submit", event => {
-    event.preventDefault();
+  // Rename existing button
+  const mobileButton =
+    form.querySelector('button[type="submit"], input[type="submit"]');
 
+  if (mobileButton) {
+    if (mobileButton.tagName === "INPUT") {
+      mobileButton.value = "Mobile:  Open in email app";
+    } else {
+      mobileButton.textContent = "Mobile:  Open in email app";
+    }
+  }
+
+  // Add PC button
+  const pcButton = document.createElement("button");
+  pcButton.type = "button";
+  pcButton.textContent = "PC:  Open in email app";
+  pcButton.className = mobileButton ? mobileButton.className : "button";
+  pcButton.id = "pc-email-button";
+
+  if (mobileButton) {
+    mobileButton.insertAdjacentElement("afterend", pcButton);
+  } else {
+    form.appendChild(pcButton);
+  }
+
+  // Encode spaces as %20 instead of +
+  function buildEncodedQuery(entries) {
+    return entries
+      .filter(([, value]) => value !== "")
+      .map(([key, value]) =>
+        `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+      )
+      .join("&");
+  }
+
+  // PC button – only Subject is replaced
+  pcButton.addEventListener("click", () => {
     const to = normalizeAddresses(field("to").value);
+
     if (!to) {
       field("to").focus();
       setStatus("Please enter at least one recipient.");
       return;
     }
 
-    const cc = normalizeAddresses(field("cc").value);
-    const bcc = normalizeAddresses(field("bcc").value);
-    const subject = field("subject").value.trim();
-    const body = field("body").value;
+    const pcSubject =
+      "१६ वर्षांचा अन्याय संपवा! २२/११/२०२६ पर्यंत मानाजीनगरचा १२ मीटर रस्ता खुला करा; अन्यथा २३/११ रोजी हजारोंचे निर्णायक आंदोलन!";
 
-    const isMobile =
-      /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-    if (isMobile) {
-      const params = new URLSearchParams();
-      if (cc) params.set("cc", cc);
-      if (bcc) params.set("bcc", bcc);
-      if (subject) params.set("subject", subject);
-      if (body) params.set("body", body);
-
-      window.location.href = `mailto:${to}?${params.toString()}`;
-      setStatus("Your email app should open with a draft. Review and press Send.");
-      return;
-    }
-
-    const gmailParams = new URLSearchParams();
-    gmailParams.set("view", "cm");
-    gmailParams.set("fs", "1");
-    gmailParams.set("to", to);
-    if (cc) gmailParams.set("cc", cc);
-    if (bcc) gmailParams.set("bcc", bcc);
+    const entries = [
+      ["view", "cm"],
+      ["fs", "1"],
+      ["to", to],
+      ["cc", normalizeAddresses(field("cc").value)],
+      ["bcc", normalizeAddresses(field("bcc").value)],
+      ["su", pcSubject],
+      ["body", field("body").value]
+    ];
 
     const gmailUrl =
-      "https://mail.google.com/mail/?" + gmailParams.toString();
+      "https://mail.google.com/mail/?" + buildEncodedQuery(entries);
 
-    const gmailWindow = window.open(gmailUrl, "_blank");
-
-    if (!gmailWindow) {
-      setStatus("Gmail popup blocked. Please allow pop-ups and try again.");
-      return;
-    }
+    window.open(gmailUrl, "_blank");
 
     setStatus(
-      "Gmail opened. Copy Subject and Message from EmailHub into Gmail."
+      "PC email draft opened. To, CC, BCC and Body are unchanged; only the Subject is replaced."
     );
   });
 
+  // Existing Mobile button functionality retained
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const to = normalizeAddresses(field("to").value);
+
+    if (!to) {
+      field("to").focus();
+      setStatus("Please enter at least one recipient.");
+      return;
+    }
+
+    const subject = field("subject").value.trim();
+    const body = field("body").value;
+
+    const entries = [
+      ["cc", normalizeAddresses(field("cc").value)],
+      ["bcc", normalizeAddresses(field("bcc").value)],
+      ["subject", subject],
+      ["body", body]
+    ];
+
+    const queryString = buildEncodedQuery(entries);
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      const url = `mailto:${to}?${queryString}`;
+      window.location.href = url;
+    } else {
+      const gmailEntries = [
+        ["view", "cm"],
+        ["fs", "1"],
+        ["to", to],
+        ["cc", normalizeAddresses(field("cc").value)],
+        ["bcc", normalizeAddresses(field("bcc").value)],
+        ["su", subject],
+        ["body", body]
+      ];
+
+      const gmailUrl =
+        "https://mail.google.com/mail/?" + buildEncodedQuery(gmailEntries);
+
+      window.open(gmailUrl, "_blank");
+    }
+
+    setStatus(
+      "Your email app should open with a draft. Review it and press Send there."
+    );
+  });
+
+  // Copy button
   document.getElementById("copy-button").addEventListener("click", async () => {
+    const text = [
+      `To: ${field("to").value}`,
+      field("cc").value ? `CC: ${field("cc").value}` : "",
+      field("bcc").value ? `BCC: ${field("bcc").value}` : "",
+      `Subject: ${field("subject").value}`,
+      "",
+      field("body").value
+    ].filter((line, index) => line !== "" || index === 4).join("\n");
+
     try {
-      await navigator.clipboard.writeText(field("body").value);
-      setStatus(
-        "Message copied. Paste it into Gmail body. Copy Subject separately."
-      );
+      await navigator.clipboard.writeText(text);
+      setStatus("Email text copied to clipboard.");
     } catch {
-      setStatus("Please select and copy the Message field manually.");
+      setStatus(
+        "Clipboard access is unavailable in this browser. You can select and copy the fields manually."
+      );
     }
   });
 
+  // Service Worker
   if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
     window.addEventListener("load", () => {
       navigator.serviceWorker
