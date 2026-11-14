@@ -10,7 +10,7 @@ window.EMAILHUB_TEMPLATES = [
     id: "email_wall_action",
     name: "भिंत पाडण्याबाबत",
     description: "भिंत पाडण्याच्या कारवाईबाबत ईमेल",
-    to: "swamiomservices1@gmail.com, gholapn27@gmail.com, prashant24.patil@gmail.com",
+    to: "cp.pune@mahapolice.gov.in, rgpstocj-bhc@nic.in, rg-bhc@nic.in, mco@punecorporation.org, navalkishorram@punecorporation.org, cityengineer@punecorporation.org, aniruddha.pawaskar@punecorporation.org, info@punecorporation.org",
     cc: "",
     bcc: "",
     subject: "आंदोलना करणेबाबत (23/11/2026)",
