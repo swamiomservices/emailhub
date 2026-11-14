@@ -1,4 +1,3 @@
-
 (() => {
   const templates = Array.isArray(window.EMAILHUB_TEMPLATES)
     ? window.EMAILHUB_TEMPLATES
