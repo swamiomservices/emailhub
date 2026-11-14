@@ -8,8 +8,8 @@
 window.EMAILHUB_TEMPLATES = [
   {
     id: "email_wall_action",
-    name: "भिंत पाडण्याबाबत",
-    description: "भिंत पाडण्याच्या कारवाईबाबत ईमेल",
+    name: "भमनपा आंदोलन 2026",
+    description: "मनपा आंदोलन 2026",
     to: "cp.pune@mahapolice.gov.in, rgpstocj-bhc@nic.in, rg-bhc@nic.in, mco@punecorporation.org, navalkishorram@punecorporation.org, cityengineer@punecorporation.org, aniruddha.pawaskar@punecorporation.org, info@punecorporation.org",
     cc: "",
     bcc: "",
