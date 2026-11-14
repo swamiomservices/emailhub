@@ -10,7 +10,7 @@ window.EMAILHUB_TEMPLATES = [
     id: "email_wall_action",
     name: "मनपा आंदोलन 2026",
     description: "मनपा आंदोलन 2026",
-    to: "cp.pune@mahapolice.gov.in, rgpstocj-bhc@nic.in, rg-bhc@nic.in, mco@punecorporation.org, navalkishorram@punecorporation.org, cityengineer@punecorporation.org, aniruddha.pawaskar@punecorporation.org, info@punecorporation.org",
+    to: "swamiomservices1@gmail.com, gholapn27@gmail.com",
     cc: "",
     bcc: "",
     subject: "१६ वर्षांच्या अन्यायाचा उद्रेक व जनतेच्या संयमाचा अंत! दोन रिट पिटीशनमधील न्यायालयीन आदेश, दोन आयुक्तांचे निर्णय व प्रशासकीय आदेश अस्तित्वात असतानाही मानाजी नगरचा मंजूर १२ मीटर हक्काचा रस्ता मोकळा न करणाऱ्या पुणे महानगरपालिका प्रशासनाला अंतिम अल्टिमेटम — दिनांक २२/११/२०२६ पर्यंत रस्ता मोकळा न केल्यास दिनांक २३/११/२०२६ रोजी सकाळी ११.०० वाजता हजारो नागरिक आपल्या मुलाबाळांसह रस्त्यावर उतरून न्यायालयीन आदेशांच्या अंमलबजावणीसाठी निर्णायक आंदोलन करतील व आपला हक्काचा रस्ता मोकळा करून घेण्यासाठी प्रत्यक्ष संघर्ष करतील!",
